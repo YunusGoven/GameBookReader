@@ -1,0 +1,90 @@
+﻿<Window x:Class="GameBookView.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:GameBookView.Views"
+        xmlns:element="clr-namespace:GameBookView.Element"
+        DataContext="{Binding Source={StaticResource Locator},Path=StoryVm}"
+        element:ExitEventToCommandPipe.Command="{Binding Save}"
+        MinWidth="500" MinHeight="500"
+        Title="Livre-jeu" Height="500" Width="800" >
+    <Grid  Margin="10,0,10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" MaxHeight="23" MinHeight="23"></RowDefinition>
+            <RowDefinition Height="29" MaxHeight="29" MinHeight="29"></RowDefinition>
+            <RowDefinition Height="21" MaxHeight="21" MinHeight="21"></RowDefinition>
+            <RowDefinition Height="11*" MaxHeight="300"></RowDefinition>
+            <RowDefinition Height="12*"></RowDefinition>
+            <RowDefinition Height="62" MaxHeight="62" MinHeight="62"></RowDefinition>
+            <RowDefinition Height="40"  MaxHeight="40" MinHeight="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button x:Name="Open"
+                Content="Open"
+                Width="50"
+                MaxHeight="23" MinHeight="23"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Command="{Binding Open}"/>
+        <Button x:Name="NewBook"
+                Content="New Book"
+                Width="60"
+                Grid.Row="0"
+                MaxHeight="23" MinHeight="23"
+                HorizontalAlignment="Left"
+                Margin="55,0,0,0"
+                Command="{Binding NewBook}"/>
+        <TextBlock x:Name="BookTitle"
+                   Text="{Binding Title }"
+                   TextWrapping="Wrap" 
+                   TextAlignment="Left"
+                   FontSize="25"
+                   FontFamily="Consolas"
+                    Grid.Row="1" Grid.RowSpan="2"/>
+        <TextBlock Grid.Row="2" Text="{Binding NumParagraph}"
+                   TextAlignment="Left"
+                   FontSize="12"  Grid.RowSpan="2"/>
+        <StackPanel  Grid.Row="3" Grid.RowSpan="2" >
+            <TextBlock x:Name="Content"
+                       Text="{Binding Path=ParagraphContent}"
+                       TextWrapping="Wrap" 
+                       TextAlignment="Left"
+                       FontSize="20"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Vertical"  Grid.RowSpan="2">
+            <ItemsControl x:Name="ActionsButton" ItemsSource="{Binding ActionPossible}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="40,0,40,10"
+                                Content="{Binding}"
+                                Command="{Binding DataContext.Changer, ElementName=ActionsButton}"
+                                CommandParameter="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        <Button Grid.Row="5" x:Name="GoBack"
+                Content="Go Back"
+                Width="150"
+                HorizontalAlignment="Left"
+                Visibility="{Binding Visible}"
+                Command="{Binding GoBack}" Margin="0,16,0,16"
+        />
+        <ComboBox Grid.Row="5" 
+                  HorizontalAlignment="Left"
+                  Visibility="{Binding Visible}"
+                  ItemsSource="{Binding ParagraphParcouru}" 
+                  SelectedItem="{Binding ComboSelected}" Width="345" Margin="390,16,0,16"/>
+
+
+        <TextBlock Grid.Row="5" x:Name="Message"
+                   Text="{Binding Message}"
+                   TextAlignment="Left"
+                   FontSize="16" Margin="0,62,0,0"
+                    Grid.Column="0" Grid.RowSpan="2"/>
+
+
+    </Grid>
+
+</Window>
